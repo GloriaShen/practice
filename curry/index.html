@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>curry</title>
+</head>
+<body>
+
+<script type="text/javascript">
+	var curry = function(arg){
+		return function(parm){
+			return arg * parm;
+		}
+	}
+	var a = curry(1)(2);
+	var b = curry(2)(3);
+</script>
+</body>
+</html>
