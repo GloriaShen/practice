@@ -9,7 +9,9 @@
  */
 /* global $, spa */
 var spa = (function () {
+	'user strict';
 	var initModule = function ($container) {
+		spa.model.initModule();
 		spa.shell.initModule( $container );
 	}
 
