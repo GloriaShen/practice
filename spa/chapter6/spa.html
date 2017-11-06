@@ -8,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="css/spa.chat.css">
 	<link rel="stylesheet" type="text/css" href="css/spa.avtr.css">
 
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.slim.js"></script>
 	<script type="text/javascript" src="js/jq/taffy.js"></script>
 	<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jq/jquery.event.gevent.js"></script>
@@ -27,16 +28,16 @@
 		$(function(){
 			spa.initModule( $('#spa') );
 
-			var $t = $('<div/>');
+			// var $t = $('<div/>');
 
-			$.gevent.subscribe( $t, 'spa-login', function () {
-				console.log('hello!', arguments);
-			});
-			$.gevent.subscribe( $t, 'spa-listchange', function () {
-				console.log('listchange', arguments);
-			});
-			var currentUser = spa.model.people.get_user();
-			var peopleDb = spa.model.people.get_db();
+			// $.gevent.subscribe( $t, 'spa-login', function () {
+			// 	console.log('hello!', arguments);
+			// });
+			// $.gevent.subscribe( $t, 'spa-listchange', function () {
+			// 	console.log('listchange', arguments);
+			// });
+			// var currentUser = spa.model.people.get_user();
+			// var peopleDb = spa.model.people.get_db();
 
 		});
 	</script>

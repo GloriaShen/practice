@@ -24,7 +24,7 @@ spa.model = (function () {
 		user: null,
 		is_connected: false
 	},
-	isFakeData = true,
+	isFakeData = false,
 	personProto, makeCid, clearPeopleDb, completeLogin,
 	makePerson, removePerson, people, chat, initModule;
 
@@ -49,7 +49,6 @@ spa.model = (function () {
 		}
 	};
 	completeLogin = function ( user_list ) {
-		console.log(user_list);
 		var user_map = user_list[0];
 		delete stateMap.people_cid_map[ user_map.cid ];
 		stateMap.user.cid = user_map._id;
@@ -116,8 +115,7 @@ spa.model = (function () {
 				},
 				name: name
 			});
-			console.log('sio', sio);
-
+			
 			sio.on( 'userupdate', completeLogin );
 
 			sio.emit( 'adduser', {
@@ -131,6 +129,7 @@ spa.model = (function () {
 
 			is_removed = removePerson(user);
 			stateMap.user = stateMap.anon_user;
+			clearPeopleDb();
 
 			chat._leave();
 			$.gevent.publish( 'spa-logout', [ user ]);
@@ -146,11 +145,11 @@ spa.model = (function () {
 	}());
 	chat = (function () {
 		var _publish_listchange, _publish_updatechat,
-			_update_list, _leave_chat, join_chat,
+			_update_list, _leave_chat, join_chat, update_avatar,
 			get_chatee, send_msg, set_chatee, chatee = null;
 
 		_update_list = function ( arg_list ) {
-			var i, len, person_map, make_person_map,
+			var i, len, person_map, make_person_map, person,
 				people_list = arg_list[0],
 				is_chatee_online = false;
 
@@ -171,10 +170,12 @@ spa.model = (function () {
 					id: person_map._id,
 					name: person_map.name
 				};
+				person = makePerson( make_person_map );
 				if ( chatee && chatee.id === make_person_map.id ) {
 					is_chatee_online = true;
+					chatee = person;
 				}
-				makePerson( make_person_map );
+				
 			}
 
 			stateMap.people_db.sort( 'name' );
@@ -254,13 +255,21 @@ spa.model = (function () {
 			chatee = new_chatee;
 			return true;
 		};
+		update_avatar = function ( avatar_update_map ) {
+			var sio = (isFakeData ? spa.fake.mockSio : spa.data.getSio() );
+			if ( sio ) {
+				console.log('avatar_update_map:',avatar_update_map);
+				sio.emit( 'updateavatar', avatar_update_map );
+			}
+		};
 
 		return {
 			_leave: _leave_chat,
 			get_chatee: get_chatee,
 			join: join_chat,
 			send_msg: send_msg,
-			set_chatee: set_chatee
+			set_chatee: set_chatee,
+			update_avatar: update_avatar
 		};
 	}());
 	initModule = function () {

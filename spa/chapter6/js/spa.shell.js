@@ -72,6 +72,7 @@ spa.shell = (function () {
         return false;
     };
     onLogin = function ( event, login_user ) {
+        console.log('shell onLogin:', login_user);
         jqueryMap.$acct.text( login_user.name );
     };
     onLogout = function ( event, logout_user ) {
@@ -95,6 +96,12 @@ spa.shell = (function () {
             people_model: spa.model.people
         });
         spa.chat.initModule( jqueryMap.$container );
+
+        spa.avtr.configModule({
+            chat_model: spa.model.chat,
+            people_model: spa.model.people
+        });
+        spa.avtr.initModule( jqueryMap.$container );
 
         // initialize chat slider and bing click handler
         stateMap.is_chat_retracted = true;

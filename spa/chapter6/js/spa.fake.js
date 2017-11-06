@@ -50,7 +50,7 @@ spa.fake = (function () {
 			callback_map[ msg_type ] = callback;
 		};
 		emit_sio = function ( msg_type, data ) {
-			var person_map;
+			var person_map, i, len;
 			if ( msg_type === 'adduser' && callback_map.userupdate ) {
 				setTimeout( function () {
 					person_map = {
@@ -85,6 +85,16 @@ spa.fake = (function () {
 				}
 
 				send_listchange();
+			}
+
+			if ( msg_type === 'updateavatar' && callback_map.listchange ) {
+				for ( i = 0, len = peopleList.length; i < len; i++ ) {
+					if ( peopleList[i]._id === data.person_id ) {
+						peopleList[i].css_map = data.css_map;
+						break;
+					}
+				}
+				callback_map.listchange([ peopleList ]);
 			}
 		};
 		emit_mock_msg = function () {
