@@ -1,5 +1,5 @@
 /* 
-	app.js - hello world
+	app.js - Simple connect server
 */
 
 /*jslint         
@@ -10,14 +10,20 @@
 	white  : true
 */
 /* global */
-var http, server;
+var connectHello, server,
+	http = require( 'http' ),
+	connect = require( 'connect' ),
+	app = connect(),
+	bodyText = 'Hello Connect';
 
-http = require( 'http' );
-server = http.createServer( function ( request, response ) {
-	console.log( request );
-	var response_text = request.url === '/test' ? 'you have hit the test page' : 'hello world';
-	response.writeHead( 200, { 'Content-Type': 'text/plain' } );
-	response.end( response_text );
-}).listen( 3000 );
+connectHello = function ( request, response ) {
+	response.setHeader( 'content-length', bodyText.length );
+	response.end( bodyText );
+};
+
+app.use( connectHello );
+server = http.createServer( app );
+
+server.listen( 3000 );
 
 console.log( 'Listening on port %d', server.address().port );
