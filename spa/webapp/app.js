@@ -16,6 +16,7 @@ var http = require( 'http' ),
 
 app.use( bodyParser.json() );
 app.use( methodOverride() );
+app.user( express.basicAuth( 'user', 'spa' ) );
 app.use( serveStatic( __dirname + '/public') );
 
 if ( 'development' === app.get( 'env' ) ) {
