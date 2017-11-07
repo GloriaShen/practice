@@ -1,29 +1,37 @@
-/* 
-	app.js - Simple connect server
+/*
+	app.js - Simple express server with middleware
 */
+'use strict';
+var http = require( 'http' ),
+	express = require( 'express' ),
+	app = express(),
 
-/*jslint         
-	browser : true, continue : true,
-	devel  : true, indent  : 4,    maxerr   : 50,
-	newcap : true, nomen   : true, plusplus : true,
-	regexp : true, sloppy  : true, vars     : false,
-	white  : true
-*/
-/* global */
-var connectHello, server,
-	http = require( 'http' ),
-	connect = require( 'connect' ),
-	app = connect(),
-	bodyText = 'Hello Connect';
+	morgan = require( 'morgan' ),
+	bodyParser = require( 'body-parser' ),
+	methodOverride = require( 'method-override' ),
+	serveStatic = require( 'serve-static' ),
 
-connectHello = function ( request, response ) {
-	response.setHeader( 'content-length', bodyText.length );
-	response.end( bodyText );
-};
+	server = http.createServer( app );
 
-app.use( connectHello );
-server = http.createServer( app );
+app.use( bodyParser.json() );
+app.use( methodOverride() );
+
+app.use( serveStatic( __dirname + '/public') );
+
+if ( 'development' === app.get( 'env' ) ) {
+	app.use( morgan( 'dev' ) );
+}
+if ( 'production' === process.env.NODE_ENV ) {
+	app.use( morgan( 'common' ) );
+}
+
+
+app.route('/')
+	.get( function ( req, res ) {
+		res.redirect( '/spa.html' );
+	} );
+
 
 server.listen( 3000 );
-
-console.log( 'Listening on port %d', server.address().port );
+console.log( 'Express server listening on port  %d in %s mode',
+ server.address().port, app.settings.env );
