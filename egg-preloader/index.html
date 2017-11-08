@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>preloader files</title>
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
+</head>
+<body>
+<div class="preload-page">
+	<div class="progress">
+		<div class="progressbar"></div>
+		<div class="progresstext">
+			<span class="current"></span>/
+			<span class="total"></span>
+		</div>
+	</div>
+</div>
+<div class="content">
+	<div class="title" title="早晨喝咖啡并不能醒脑"></div>
+	<div class="test">
+		
+	</div>
+    <div class="text" style="display: none">
+        <p>
+            在某天醒来后，你用某品牌的滴漏咖啡壶给自己煮了一杯可疑的蓝山或是哥伦比亚咖啡，你加了点糖，加了点植脂末，混合嘴边没刷干净的牙膏沫一仰头一饮而尽，但是直到吃中饭前你还是觉得昏昏沉沉好像咖啡不再像以前那么管用了。你是对的——也有可能你只是欠睡，有点神经错乱。但是知道什么时候喝咖啡最能振奋自己是十分微秒的科学难题，不要再学傻子们清早一杯咖啡的习惯，他们是错的。
+        </p>
+        <p>
+            美国健康科学统一服务大学的Steven Miller在Gizmod发表了一篇文章告诉人们如何最大效率利用一杯咖啡给人带来的快乐，要点在于理解咖啡的药理学——也就是理解你身体的生物节律如何与咖啡因这种成瘾品相互作用。(咖啡因在美国依然被视作成瘾品)
+        </p>
+        <p>
+            你身体中最重要的节律是生物钟，24小时日夜循环，也可以通过外界因素进行调整，因此也叫授时因子。对喝咖啡成瘾的笔头工作的哺乳类动物，比如我们自己(原文)，最重要的授时因子就是光。
+        </p>
+        <p>
+            你体内的生物钟和授时因子会影响你身体产生皮质醇，也叫做压力荷尔蒙，可以让人保持警惕。大多数人血液中皮质醇含量在早上8点-9点达到顶点，然后在中午12点和1点再次到顶。如果你正处在皮质醇水平较高的时间，千万不要碰你的java。一天中的这些时间段人们最警觉，所以喝咖啡的效率最低。
+        </p>
+        <p>
+            这些时候往往是你身体最不需要咖啡因的时候，一直在这些时段喝咖啡只能增加你对咖啡因的耐受性。相反Miller教授建议大家在早上9:30-11：30这段时间喝咖啡，或者在下午1:30左右喝咖啡。
+        </p>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/zepto/1.1.4/zepto.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script>
+<script type="text/javascript" src="js/preLoader.js"></script>
+<script type="text/javascript">
+var loader = new preloader({
+	resources : [
+		'http://p2.qhimg.com/t01ed1438874f940dc0.jpg',
+		'http://p9.qhimg.com/t01b4ff03b72c7dc6c7.jpg',
+		'http://p2.qhimg.com/t01dd90dfbec92074d0.jpg',
+		'http://p7.qhimg.com/t01cfec6d87cde457c5.jpg',
+		'http://p9.qhimg.com/t01943ced462da67833.jpg',
+		'http://p0.qhimg.com/t01943ced462da67833.jpg',
+		'http://p6.qhimg.com/t01aa15a7ba7ccb49a7.jpg',
+		'http://p8.qhimg.com/t010f1e8badf1134376.jpg',
+		'http://p8.qhimg.com/t01cf37ea915533a032.jpg',
+		'http://p3.qhimg.com/t0193d8a3963e1803e9.jpg',
+		'http://p3.qhimg.com/t01cd6a4d4b4bd4457b.jpg'
+	],
+	onStart : function(total){
+		console.log('start:'+total);
+	},
+	onProgress : function(current, total){
+		var percent = current/total*100;
+		$('.progressbar').css('width', percent+'%');
+		$('.progresstext .current').text(current);
+		$('.progresstext .total').text(total);
+	},
+	onComplete : function(total){
+		$('.preload-page').remove();
+		console.log('加载完毕:'+total+'个资源');
+		init();
+	}
+});
+
+WebFont.load({
+  custom: {
+    families: ['JXK'],
+    urls : ['styles/JXK/JXK.css']  //字体声明处，页面不需要引入该样式
+  },
+  loading: function() {  //所有字体开始加载
+    console.log('loading');
+  },
+  active: function() {  //所有字体已渲染
+    console.log('active');
+    loader.start();
+  },
+  inactive: function() { //字体预加载失败，无效字体或浏览器不支持加载
+    console.log('inactive');
+  },
+});
+
+
+var str = '在某天醒来后，你用某品牌的滴漏咖啡壶<br/>给自己煮了一杯可疑的蓝山或是哥伦比亚。<br/>  你是对的——也有可能你只是欠睡，有点神经错乱。<br/>  但是知道什么时候喝咖啡最能振奋自己是十分微秒的科学难题，不要再学傻子们清早一杯咖啡的习惯，他们是错的。';
+var typeWords = function(obj){
+	var elem = obj.elem,
+		str = obj.str || elem.prop('title').trim(),
+		i = 1, len = str.length, step,
+		flag = null;
+	function done(){
+		if ( len && i < len ) {
+			elem.html(str.substring(0, i));
+			step = ( str.substring(i, i+5) == '<br/>'  ? 5 : 1);
+			i += step;
+		} else {
+			clearInterval( flag );
+		}
+	}
+	flag = setInterval(done, 200);
+};
+var init = function () {
+	typeWords({
+		elem: $('.test'),
+		str: str
+	});
+}
+</script>
+</body>
+</html>
