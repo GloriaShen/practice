@@ -75,8 +75,8 @@ var loader = new preloader({
 
 WebFont.load({
   custom: {
-    families: ['JXK'],
-    urls : ['styles/JXK/JXK.css']  //字体声明处，页面不需要引入该样式
+    families: ['FZXS'],
+    urls : ['styles/FZXS/FZXS.css']  //字体声明处，页面不需要引入该样式
   },
   loading: function() {  //所有字体开始加载
     console.log('loading');
@@ -87,16 +87,18 @@ WebFont.load({
   },
   inactive: function() { //字体预加载失败，无效字体或浏览器不支持加载
     console.log('inactive');
+    loader.start();
   },
 });
 
-
 var str = '在某天醒来后，你用某品牌的滴漏咖啡壶<br/>给自己煮了一杯可疑的蓝山或是哥伦比亚。<br/>  你是对的——也有可能你只是欠睡，有点神经错乱。<br/>  但是知道什么时候喝咖啡最能振奋自己是十分微秒的科学难题，不要再学傻子们清早一杯咖啡的习惯，他们是错的。';
-var typeWords = function(obj){
-	var elem = obj.elem,
-		str = obj.str || elem.prop('title').trim(),
+
+$.fn.typeWords = function(config){
+	var elem = $(this),
+		str = config.str || elem.prop('title').trim(),
 		i = 1, len = str.length, step,
 		flag = null;
+		console.log(elem);
 	function done(){
 		if ( len && i < len ) {
 			elem.html(str.substring(0, i));
@@ -109,10 +111,13 @@ var typeWords = function(obj){
 	flag = setInterval(done, 200);
 };
 var init = function () {
-	typeWords({
-		elem: $('.test'),
+	$('.test').typeWords({
 		str: str
 	});
+	// typeWords({
+	// 	elem: $('.test'),
+	// 	str: str
+	// });
 }
 </script>
 </body>
