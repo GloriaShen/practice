@@ -22,10 +22,7 @@ EmployeeProvider.prototype = {
 		this.getCollection(function(err, employee_collection){
 			if ( err ) { callback(err); }
 			else { 
-				// employee_collection.find().toArray().then(function(res){
-				// });
 				employee_collection.find().toArray(function(err, result){
-					console.log('findAll result:', result);
 					if ( err ) { callback(err); }
 					else { callback(null, result); }
 				});
@@ -41,7 +38,7 @@ EmployeeProvider.prototype = {
 					employees.map(function(item){
 						item.created_at = new Date();
 					});
-					console.log('save employees: ',employees);
+					
 					employee_collection.insert(employees, function(){
 						callback(null, employees);
 					});
@@ -53,7 +50,6 @@ EmployeeProvider.prototype = {
 		this.getCollection(function(err, employee_collection){
 			if( err ) { callback(err); }
 			else {
-				console.log('findById id:', id);
 				var oid = new ObjectId(id);
 				employee_collection.find({"_id": oid}).toArray(function(err, result){
 					if ( err ) { callback(err); }
@@ -66,7 +62,6 @@ EmployeeProvider.prototype = {
 		this.getCollection(function(err, employee_collection){
 			if ( err ) { callback(err); }
 			else {
-				console.log('update id:', id);
 				employee_collection.update(
 					{_id: new ObjectId(id)},
 					employees,
@@ -82,7 +77,6 @@ EmployeeProvider.prototype = {
 		this.getCollection(function(err, employee_collection){
 			if ( err ) { callback(err); }
 			else {
-				console.log('delete id:', id);
 				employee_collection.remove(
 					{_id: new ObjectId(id)},
 					function(err, employee){

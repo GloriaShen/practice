@@ -19,7 +19,6 @@ router.get('/new', function(req, res){
 })
 .get('/:id/edit', function(req, res){
 	employeeProvider.findById(req.param('_id'), function(err, employee){
-		console.log('get edit employee:', employee);
 		res.render('employee_edit', {
 			employee: employee
 		});
