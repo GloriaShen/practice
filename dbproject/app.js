@@ -2,9 +2,10 @@ var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
 
 // Connection URL
-var url = 'mongodb://localhost:27017/myproject';
+var url = 'mongodb://localhost:27017/test';
 
-var insertDocs, findDocs, updateDocs, removeDocs, indexCollection;
+var insertDocs, findDocs, updateDocs, removeDocs, indexCollection,
+	createCapped, closeDb, createValidated;
 
 insertDocs = function(db, callback){
 	var collection = db.collection('documents');
@@ -61,20 +62,50 @@ indexCollection = function(db, callback){
 		}
 	);
 };
+createCapped = function(db, callback){
+	db.createCollection('myCollection', {
+		"capped": true, "size": 10000, "max": 5000
+	}, function(err, results){
+		console.log('collection created.');
+		callback();
+	});
+};
+closeDb = function(db){
+	return function(){
+		db.close();
+	};
+};
+createValidated = function(db, callback){
+	db.createCollection("contacts",{
+		'validator': {
+			'$or': [
+				{ 'phone': {'$type': 'string'} },
+				{ 'email': {'$regex': /@mongodb\.com$/} },
+				{ 'status': {'$in': ['Unknown', 'Incomplete']} }
+			]
+		}
+	}, function(err, results){
+		console.log('Collection created.');
+		callback();
+	});
+};
 // Use connect method to connect to the server
 MongoClient.connect(url, function(err, db) {
+console.log('ERRRRR:', err);
   assert.equal(null, err);
   console.log("Connected successfully to server");
   // insertDocs(db, function(){
-  	
+  		
   // });
 
-    indexCollection(db, function(){
-  		findDocs (db, function(){
-	  		db.close();
-	  	});
+   //  findDocs (db, function(){
+  	// 	db.close();
+  	// });
+  	// createCapped(db, closeDb(db));
+  	// 
+  	createValidated(db, function(db){
+  		findDocs(db, closeDb(db));
   	});
-  // db.close();
 });
 
 
