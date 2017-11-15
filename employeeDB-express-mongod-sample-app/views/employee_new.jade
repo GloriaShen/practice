@@ -1,0 +1,20 @@
+extends layout
+
+block content
+	h1= title
+	div.new-employee
+		form( method="post")
+			div.form-box
+				div.col
+					span.label Title :
+					input(type="text", name="title", id="editEmployeeTitle")
+				div.col
+					span.label Name :
+					input(type="text", name="name", id="editEmployeeName")
+				div#editEmployeeSubmit
+					input(type="submit", value="Save")
+	a(href="/")!= "Back to Employee List"
+
+
+
+
