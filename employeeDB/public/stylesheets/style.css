@@ -70,3 +70,6 @@ input[type =submit] {
   display: block;
   float: left;
 }
+button:hover {
+  cursor: pointer;
+}
