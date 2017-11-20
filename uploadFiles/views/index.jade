@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  input(type="file", id="uploadFile", name="uploadFile", value="")
+  button(type="button", id="uploadBtn") 上传图片
+  div.result
+  script(type="text/javascript", src="http://apps.bdimg.com/libs/zepto/1.1.4/zepto.min.js")
+  script(type="text/javascript", src="/javascripts/index.js")
