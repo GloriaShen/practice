@@ -2,7 +2,6 @@ var mongodb = require('mongodb'),
 	Db = mongodb.Db,
 	Connection = mongodb.Connection,
 	Server = mongodb.Server,
-	BSON = mongodb.BSON,
 	ObjectId = mongodb.ObjectId;
 
 EmployeeProvider = function(host, port){
