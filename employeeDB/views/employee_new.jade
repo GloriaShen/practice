@@ -11,10 +11,17 @@ block content
 				div.col
 					span.label Name :
 					input(type="text", name="name", id="editEmployeeName")
+				div.col
+					span.label 图片：
+					input(type="file", id="uploadFile", name="uploadFile", value="")
+				div.result
+					input(type="hidden", id="upFile", name="upFile" value="")
 				div#editEmployeeSubmit
 					input(type="submit", value="Save")
+					
 	a(href="/")!= "Back to Employee List"
-
+	script(type="text/javascript", src="http://apps.bdimg.com/libs/zepto/1.1.4/zepto.min.js")
+	script(type="text/javascript", src="/javascripts/index.js")
 
 
 

@@ -22,6 +22,7 @@ EmployeeProvider.prototype = {
 			if ( err ) { callback(err); }
 			else { 
 				employee_collection.find().toArray(function(err, result){
+					console.log('result:', result);
 					if ( err ) { callback(err); }
 					else { callback(null, result); }
 				});
@@ -37,7 +38,7 @@ EmployeeProvider.prototype = {
 					employees.map(function(item){
 						item.created_at = new Date();
 					});
-					
+					console.log('save employees:', employees);
 					employee_collection.insert(employees, function(){
 						callback(null, employees);
 					});
