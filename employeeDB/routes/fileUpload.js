@@ -38,12 +38,12 @@ router.post('/', function(req, res, next){
               // f2 = tt.slice(2, 4),
               // f3 = tt.slice(4, 6),
               // f4 = tt.slice(6, 8),
-              a1 = "/../public/uploads/upFile/",
-              // a1 = "/public/uploads/upFile/" + f1 + "/" + f2 + "/" + f3 + "/" + f4,
+              a1 = "/../public/uploads/upFileglo/",
+              // a1 = "/public/uploads/upFileglo/" + f1 + "/" + f2 + "/" + f3 + "/" + f4,
               a2 = "/" + files.file.name,
               folder = __dirname + a1,
               new_path = folder + a2,
-              visit = "/uploads/upFile/" + a2;
+              visit = "/uploads/upFileglo/" + a2;
               // visit = "/uploads/upFile/" + f1 + "/" + f2 + "/" + f3 + "/" + f4 + a2;
 
         mkdirs(folder);

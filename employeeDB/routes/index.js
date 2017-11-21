@@ -5,6 +5,7 @@ var express = require('express'),
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	employeeProvider.findAll(function(err, emps){
+		// console.log('emps:', emps);
 		res.render('index', {
 			title: 'Employees',
 			employees: emps

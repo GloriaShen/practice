@@ -15,11 +15,23 @@ block content
                 div.col
                     span.label 图片：
                     input(type="file", id="uploadFile", name="uploadFile", value=employee.pic)
+                    input(type="hidden", name="pictype", value="")
                 div.result
                     input(type="hidden", id="upFile", name="upFile" value=employee.pic)
                     img(src=employee.pic)
                 div#editEmployeeSubmit
-                    input(type="submit", value="Update")
-        a(href="/")!= "Back to Employee List"
+                    if employee.name
+                      input(type="submit", value=" Update ")
+                    else
+                      input(type="submit", value=" Save ")
+    div.cutPic
+        div#clipArea
+        button#clipBtn 截取
+        //div#view
+    a(href="/")!= "Back to Employee List"
     script(type="text/javascript", src="http://apps.bdimg.com/libs/zepto/1.1.4/zepto.min.js")
+    script(type="text/javascript", src="/javascripts/hammer.min.js")
+    script(type="text/javascript", src="/javascripts/iscroll-zoom-min.js")
+    script(type="text/javascript", src="/javascripts/lrz.all.bundle.js")
+    script(type="text/javascript", src="/javascripts/PhotoClip.js")
     script(type="text/javascript", src="/javascripts/index.js")
