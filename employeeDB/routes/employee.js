@@ -32,11 +32,11 @@ processImg = function(params, callback){
 		a1 = __dirname + '/../public/uploads/upFile/',
 		i1 = picname + '.' + pictype,
 		imageUrl =  a1 + i1;
-		console.log('imageUrl: ',imageUrl);
-	console.log('imageBuffer: ',imageBuffer);
+		// console.log('imageUrl: ',imageUrl);
+		// console.log('imageBuffer: ',imageBuffer);
 	mkdirs(a1);
 	fs.writeFile( imageUrl, imageBuffer.data, function(err) { 
-		console.log('err:', err);
+		// console.log('err:', err);
 		if(!err){
 			callback(i1);
 		}
@@ -44,75 +44,68 @@ processImg = function(params, callback){
 	});
 }
 /* GET home page. */
-router.get('/new', function(req, res){
-	res.render('employee_edit', {
-		title: 'New Employee',
-		employee: {
-			name: '',
-			title: '',
-			pic: ''
-		}
-	});
-})
-.post('/new', function(req, res){
-	new processImg({
-		picname: req.param('name'),
-		pictype: req.param('pictype'),
-		upFile: req.param('upFile')
-	}, function(picname){
-		employeeProvider.save({
-			title: req.param('title'),
-			name: req.param('name'),
-			pic: '/uploads/upFile/' + picname
-		}, function(err, docs){
-			res.redirect('/');
-		});
-	});
-	
-	/*employeeProvider.save({
-		title: req.param('title'),
-		name: req.param('name'),
-		pic: req.param('upFile')
-	}, function(err, docs){
-		console.log('docs:', docs);
-		res.redirect('/');
-	});*/
-})
-.get('/:id/edit', function(req, res){
-	employeeProvider.findById(req.param('_id'), function(err, employee){
+router.route('/new')
+	.get(function(req, res){
 		res.render('employee_edit', {
-			employee: employee
+			title: 'New Employee',
+			employee: {
+				name: '',
+				title: '',
+				pic: ''
+			}
 		});
-	});
-})
-.post('/:id/edit', function(req, res){
-	new processImg({
-		picname: req.param('picname'),
-		pictype: req.param('pictype'),
-		upFile: req.param('upFile')
-	}, function(picname){
-		employeeProvider.update(
-			req.param('_id'),
-			{
+	})
+	.post(function(req, res){
+		new processImg({
+			picname: req.param('name'),
+			pictype: req.param('pictype'),
+			upFile: req.param('upFile')
+		}, function(picname){
+			employeeProvider.save({
 				title: req.param('title'),
 				name: req.param('name'),
 				pic: '/uploads/upFile/' + picname
-			},
-			function(err, docs){
+			}, function(err, docs){
 				res.redirect('/');
-			}
-		);
+			});
+		});
 	});
-	
-})
-.post('/:id/delete', function(req, res){
-	var pa = __dirname + '/../public' + req.param('pic');
-	fs.unlink(pa,function(err){
-		console.log('fs.unlink err:', err);
+router.route('/:id/edit')
+	.get(function(req, res){
+		employeeProvider.findById(req.param('_id'), function(err, employee){
+			res.render('employee_edit', {
+				employee: employee
+			});
+		});
+	})
+	.post(function(req, res){
+		new processImg({
+			picname: req.param('picname'),
+			pictype: req.param('pictype'),
+			upFile: req.param('upFile')
+		}, function(picname){
+			employeeProvider.update(
+				req.param('_id'),
+				{
+					title: req.param('title'),
+					name: req.param('name'),
+					pic: '/uploads/upFile/' + picname
+				},
+				function(err, docs){
+					res.redirect('/');
+				}
+			);
+		});
 	});
-	employeeProvider.delete(req.param('_id'),function(err, docs){
-		res.redirect('/');
+router.route('/:id/delete')
+	.post(function(req, res){
+		var pa = __dirname + '/../public' + req.param('pic');
+		fs.unlink(pa,function(err){
+			console.log('fs.unlink err:', err);
+		});
+		employeeProvider.delete(req.param('_id'),function(err, docs){
+			res.redirect('/');
+		});
 	});
-});
 
 module.exports = router;
